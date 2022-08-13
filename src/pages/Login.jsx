@@ -77,6 +77,7 @@ const Box = styled.div`
   width: 400px;
   height: 470px;
   text-align: center;
+  
   //border: 2px solid white;
   //border-radius: 10px;
   background-color: white;

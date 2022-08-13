@@ -1,6 +1,7 @@
 import React from "react";
+import styled from "styled-components"
 
-const Comment = () => {
+const Music = () => {
     return (
         <div>
             
@@ -8,4 +9,4 @@ const Comment = () => {
     );
 };
 
-export default Comment;
+export default Music;
