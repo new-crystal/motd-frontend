@@ -1,0 +1,16 @@
+
+.comment-box{
+    max-width: 700px;
+    width: 100vw;
+    margin: 10px auto;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    display: flex;
+    padding: 20px;
+}
+
+.but-box{
+    position: relative;
+    top:  20px;
+    left: 500px;
+}
