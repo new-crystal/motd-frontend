@@ -11,13 +11,12 @@ import {
 
 const Comment = ({comment}) => {
 
-const { id } = useParams();
+const { musicId } = useParams();
 const dispatch = useDispatch();
 const [edit, setEdit] = useState(false);
 const [updatedComment, setUpdatedComment] = useState("");
 
-const { content } = useSelector((state) => state.comment.list);
-console.log(content)
+const content = useSelector((state) => state.comment.list);
 
 const onDelButHandler = () => {
   dispatch(__deleteComment(comment.id))
@@ -28,17 +27,16 @@ const onUpdatedBtnHandler = () => {
     __updateComment(
       {id: comment.id,
       content: updatedComment,
-      nickname: comment.nickname,
-      musicId: id,
-  }
-    )
-  )
+      nickname: "susu",
+      musicId,
+  } ) )
   setEdit(false);
 }
 
-const onChangeEditBtnHandler = () => {
+const onChangeEditBtnHandler = (e) => {
   setEdit(true);
   dispatch(__getComment(comment.id));
+  setUpdatedComment(e.target.value)
 };
 
 const onCancleBtnHandler = () => {
@@ -52,8 +50,8 @@ useEffect(()=>{
 },[content]);
 
 useEffect(()=>{
-  dispatch(__getComment());
-},[])
+ setTimeout(()=>{dispatch(__getComment());},300) 
+},[edit]);
 
  return (
         <div>
@@ -62,8 +60,8 @@ useEffect(()=>{
          <div>
             <CommentInput
             type="text"
-            value={updatedComment}
-            conChange={(e)=>{onChangeEditBtnHandler(e.target.value)}}
+            // value={updatedComment}
+            onChange={onChangeEditBtnHandler}
             maxLength={30}
             placeholder="수정할 내용을 입력해주세요(30자 이내)"/>
          </div>
@@ -79,9 +77,9 @@ useEffect(()=>{
          :
          <>
          <CommentBox>
-            <p>{content.nickname}</p>
-            <p>{content.content}</p>
-         </CommentBox>
+            <Nickname>{comment.nickname}</Nickname>
+            <Content>{comment.content}</Content>
+         
          <div>
             <Button
             onClick={onEditBtnHandler}>
@@ -92,6 +90,7 @@ useEffect(()=>{
                 삭제
             </Button >
          </div>
+         </CommentBox>
          </>
         }
         </div>
@@ -102,6 +101,7 @@ useEffect(()=>{
 const CommentBox = styled.div`
 max-width: 700px;
 width: 100vw;
+height: 40px;
 margin: 10px auto;
 border: 1px solid rgb(79, 188, 238);
 border-radius: 10px;
@@ -112,7 +112,10 @@ const Button = styled.button`
 background-color: white;
 border: 2px solid rgb(79, 188, 238);
 padding: 5px;
-marigin: 10px;
+margin: 5px;
+position: relative;
+top: 10px;
+left: 500px;
 &:hover{
    background-color: rgb(79, 188, 238);
    color: white;
@@ -124,6 +127,16 @@ height: 30px;
 width: 250px;
 border: 1px solid rgb(79, 188, 238);
 border-radius: 5px;
+`
+const Nickname = styled.p`
+font-size: 15px;
+position: relative;
+top: -20px;
+`
+const Content = styled.p`
+font-size: 20px;
+position: relative;
+left: -20px;
 `
 
 export default Comment;

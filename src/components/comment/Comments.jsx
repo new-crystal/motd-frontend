@@ -10,7 +10,7 @@ const Comments = () => {
     const {musicId} = useParams();
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
-    const { data } = useSelector((state) => state.comments.commentsByMusicId.list);
+    const { data } = useSelector((state) => state.comments.commentsByMusicId);
 
      useEffect(() => {
          if (show) {
