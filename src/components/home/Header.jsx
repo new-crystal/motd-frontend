@@ -16,7 +16,7 @@ const Header = () => {
             <BtnBox>
                 <Button onClick={()=>navigate()}>sign up</Button>
                 <Button onClick={()=>navigate("/login")}>login</Button>
-                <Button onClick={()=>navigate()}>progfile</Button>
+                <Button onClick={()=>navigate("/profile")}>profile</Button>
             </BtnBox>
         </HeaderBox>
     );
