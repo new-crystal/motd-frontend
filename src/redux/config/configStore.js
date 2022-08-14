@@ -1,16 +1,12 @@
-import {
-    configureStore,
-    combineReducers,
-  } from "@reduxjs/toolkit";
-  
-  import 상태파일명 from "상태파일경로";
-  
-  const rootReducer = combineReducers({
-    상태이름: 상태파일명,
-  });
-  
-  const store = configureStore({
-    reducer: rootReducer,
-  });
-  
-  export default store;
+import { configureStore } from "@reduxjs/toolkit";
+import comments from "../modules/commentsSlice";
+import comment from "../modules/commentSlice";
+
+const store = configureStore({
+  reducer: {
+    comments,
+    comment,
+  },
+});
+
+export default store;

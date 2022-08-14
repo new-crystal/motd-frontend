@@ -1,12 +1,12 @@
 import React from "react";
 import Music from "../components/detail/Music";
-import Comment from "../components/detail/Comment";
+import Comments from "../components/comment/Comments";
 
 const Detail = () => {
     return (
         <div>
             <Music/>
-            <Comment />
+            <Comments />
         </div>
     );
 };

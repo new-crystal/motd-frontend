@@ -1,17 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components"
 
 
 const Header = () => {
+    const navigate = useNavigate();
+
     return (
         <HeaderBox>
             <TitleBox>
+                <Button onClick={()=>navigate("/")}>
                 <h1>🎼 MOTD</h1>
+                </Button>
             </TitleBox>
             <BtnBox>
-                <Button>sign up</Button>
-                <Button>login</Button>
-                <Button>progfile</Button>
+                <Button onClick={()=>navigate()}>sign up</Button>
+                <Button onClick={()=>navigate("/login")}>login</Button>
+                <Button onClick={()=>navigate()}>progfile</Button>
             </BtnBox>
         </HeaderBox>
     );
@@ -38,6 +43,9 @@ padding: 10px;
 border: 0px;
 font-size: 15px;
 font-weight: bold;
+&:hover{
+    color: #023e8a;
+  }
 `
 
 

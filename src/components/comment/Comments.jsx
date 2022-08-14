@@ -4,35 +4,53 @@ import { useDispatch, useSelector } from "react-redux";
 import { __getCommnetsByMusicId } from "../../redux/modules/commentsSlice";
 import AddCommentForm from "./AddComment";
 import Comment from "./Comment";
+import styled from "styled-components";
 
 const Comments = () => {
-    const { id } = useParams();
+    const {musicId} = useParams();
     const dispatch = useDispatch();
-    const [isShow, setisShow] = useState(false);
-    const { data } = useSelector((state) => state.comments.commentsByTodoId);
+    const [show, setShow] = useState(false);
+    const { data } = useSelector((state) => state.comments.commentsByMusicId.list);
 
-    useEffect(() => {
-        if (isShow) {
-          dispatch(__getCommnetsByMusicId(id));
-        }
-      }, [dispatch, id, isShow]);
+     useEffect(() => {
+         if (show) {
+           dispatch(__getCommnetsByMusicId(musicId));
+         }
+       }, [dispatch, musicId, show]);
+
 
     return(
-        <div isShow={isShow}>
-            <div
-            onClick={()=>{setisShow(!isShow)}}>
-                <p>
-                    {isShow ? "댓글 내리기" : "댓글 보기"}
-                </p>
-            </div>
-            <AddCommentForm/>
-            <div>
-                {data?.map((comment) => {
-                    <Comment key = {comment.id} comment = {comment}/>
-                })}
-            </div>
-        </div>
+        <WrapBox show={show}>
+            <CommentBtn
+            onClick={()=>{setShow(!show)}}>
+                    {show ? "댓글 내리기" : " 댓글 보기 !"}
+            </CommentBtn>
+            {show ? <AddCommentForm/> : null}
+             <WrapBox>
+             {data?.map((comment) => (
+                 <Comment key = {comment.id} comment = {comment}/>
+             ))}
+         </WrapBox>
+        </WrapBox>
     );
 };
+
+const WrapBox = styled.div`
+width: 700px;
+height: ${({ show }) => (show ? "400px" : "50px")};
+margin: 10px auto;
+`
+
+const CommentBtn = styled.button`
+background-color: white;
+border: 2px solid rgb(79, 188, 238);
+border-radius: 10px;
+padding: 7px;
+margin: 10px 300px;
+font-weight: bold;
+&:hover{
+  background-color: rgb(79, 188, 238);
+  color: white;
+}`
 
 export default Comments;

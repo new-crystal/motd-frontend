@@ -4,72 +4,72 @@ import { serverUrl } from ".";
 
 export const __getCommentsThunk = createAsyncThunk(
   "GET_COMMENTS",
-  async (_, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.get(`${serverUrl}/comments`);
-      return thunkAPI.fulfillWithValue(data);
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e.code);
+      const data  = await axios.get(`${serverUrl}/comments`);
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
 
 export const __getCommnetsByMusicId = createAsyncThunk(
   "GET_COMMENT_BY_MUSIC_ID",
-  async (arg, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.get(`${serverUrl}/comments?musicId=${arg}`);
-      return thunkAPI.fulfillWithValue(data);
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e.code);
+      const data = await axios.get(`${serverUrl}/comments?musicId=${payload}`);
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
 
 export const __deleteComment = createAsyncThunk(
   "DELETE_COMMENT",
-  async (arg, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      await axios.delete(`${serverUrl}/comments/${arg}`);
-      return thunkAPI.fulfillWithValue(arg);
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e.code);
+      await axios.delete(`${serverUrl}/comments/${payload}`);
+      return thunkAPI.fulfillWithValue(payload);
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
 
 export const __updateComment = createAsyncThunk(
   "UPDATE_COMMENT",
-  async (arg, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      axios.patch(`${serverUrl}/comments/${arg.id}`, arg);
-      return thunkAPI.fulfillWithValue(arg);
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e);
+      axios.patch(`${serverUrl}/comments/${payload.id}`, payload);
+      return thunkAPI.fulfillWithValue(payload);
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
 
 export const __addComment = createAsyncThunk(
   "ADD_COMMENT",
-  async (arg, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.post(`${serverUrl}/comments`, arg);
-      return thunkAPI.fulfillWithValue(data);
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e);
+      const data  = await axios.post(`${serverUrl}/comments`, payload);
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
 
 const initialState = {
   comments: {
-    data: [],
+    list: [],
     isLoading: false,
     error: null,
   },
   commentsByMusicId: {
-    data: [],
+    list: [],
     isLoading: false,
     error: null,
   },
@@ -78,11 +78,7 @@ const initialState = {
 export const commentsSlice = createSlice({
   name: "comments",
   initialState,
-  reducers: {
-    clearTodo: (state) => {
-      state.comments = null;
-    },
-  },
+  reducers: {},
   extraReducers: {
     // 전체 댓글 조회
     [__getCommentsThunk.pending]: (state) => {
@@ -90,14 +86,14 @@ export const commentsSlice = createSlice({
     },
     [__getCommentsThunk.fulfilled]: (state, action) => {
       state.comments.isLoading = false;
-      state.comments.data = action.payload;
+      state.comments.list = action.payload;
     },
     [__getCommentsThunk.rejected]: (state, action) => {
       state.comments.isLoading = false;
       state.comments.error = action.payload;
     },
 
-    // 댓글 조회 (todoId)
+    // 댓글 조회 (musicId)
     [__getCommnetsByMusicId.pending]: (state) => {
       state.commentsByMusicId.isLoading = true;
     },
@@ -147,7 +143,7 @@ export const commentsSlice = createSlice({
     },
     [__addComment.fulfilled]: (state, action) => {
       state.commentsByMusicId.isLoading = false;
-      state.commentsByMusicId.data.push(action.payload);
+      state.commentsByMusicId.list=[...state, action.payload]
     },
     [__addComment.rejected]: (state, action) => {
       state.commentsByMusicId.isLoading = false;
@@ -156,4 +152,5 @@ export const commentsSlice = createSlice({
   },
 });
 
-export default commentsSlice.reducer;
+export const commentsActions = commentsSlice.actions;
+export default commentsSlice;

@@ -1,0 +1,19 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "nickname": "yuyu",
+      "content": "노래 좋아요"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
