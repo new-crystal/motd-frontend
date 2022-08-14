@@ -23,7 +23,7 @@ const Comments = () => {
         <WrapBox show={show}>
             <CommentBtn
             onClick={()=>{setShow(!show)}}>
-                    {show ? "댓글 내리기" : " 댓글 보기 !"}
+                    {show ? "취소" : " 댓글 작성하기 !"}
             </CommentBtn>
             {show ? <AddCommentForm/> : null}
              <WrapBox>

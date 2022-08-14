@@ -8,7 +8,7 @@ const HomePage = () => {
         <Text>My Music of today</Text>
     </Container>
     <Container>
-    <Text>Other Music of today</Text>
+    <Text>Music of the Day by Others</Text>
 
     </Container>
     </>);

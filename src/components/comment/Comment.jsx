@@ -111,11 +111,12 @@ padding: 20px;`
 const Button = styled.button`
 background-color: white;
 border: 2px solid rgb(79, 188, 238);
+border-radius: 5px;
 padding: 5px;
 margin: 5px;
 position: relative;
 top: 10px;
-left: 500px;
+left: 400px;
 &:hover{
    background-color: rgb(79, 188, 238);
    color: white;

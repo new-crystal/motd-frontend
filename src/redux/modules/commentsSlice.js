@@ -55,6 +55,7 @@ export const __addComment = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data  = await axios.post(`${serverUrl}/comments`, payload);
+      axios.get(`${serverUrl}/comments`)
       return thunkAPI.fulfillWithValue(data.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
