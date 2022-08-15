@@ -11,151 +11,166 @@ const Upload = () => {
   const [album, setAlbum] = useState();
   const [musicname, setMusicname] = useState("music file selet!");
   const navigate = useNavigate();
-  
-  
+
   const onChangeInputHandler = (e) => {
     setSelectedFile({
-        selectedFile: e.target.files[0]
-    })
-    setMusicname(e.target.files[0].name)
-  }
+      selectedFile: e.target.files[0],
+    });
+    setMusicname(e.target.files[0].name);
+  };
 
-  const onChangeInputTitleHandler = (event) =>{
+  const onChangeInputTitleHandler = (event) => {
     setTitle(event.target.value);
-  }
+  };
 
-  const onChangeInputArtistHandler = (event0) =>{
+  const onChangeInputArtistHandler = (event0) => {
     setArtist(event0.target.value);
-  }
+  };
 
-  const onChangeInputAlbumHandler = (event1) =>{
+  const onChangeInputAlbumHandler = (event1) => {
     setAlbum(event1.target.value);
-  }
+  };
 
-  const postHandler = () => {
+  const postHandler = (e) => {
+    e.preventDefault();
     const formData = new FormData();
-    formData.append('file', selectedFile);
-    const addMusic = {
-       title, artist, album, 
-       musicValue: formData
-    }
+    formData.append("file", selectedFile);
+    // formData.append("title", title)
+    // formData.append("artist", artist)
+    // formData.append("album", album)
+    // const addMusic = {
+    //   title,
+    //   artist,
+    //   album,
+    //   musicValue: formData,
+    // };
+    // console.log(addMusic);
 
-    axios.post("url", addMusic).then(res => {
-        setSelectedFile(null);
-        alert("파일 업로드 성공!")
-        navigate("/")
-    }).catch(err=>{
-        alert("파일 업로드 실패!")
-    })
-  }
+    axios
+      .post("http://3.34.47.211:3000/api/musics", formData, {
+        headers: {
+          "Content-type": "multipart/form-data; charset=UTF-8",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        //setSelectedFile(null);
+        //alert("파일 업로드 성공!");
+        //navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+        //alert("파일 업로드 실패!");
+      });
+  };
 
-    return (
-        <>
-        <React.Fragment>
+  return (
+    <>
+      <React.Fragment>
         <InputBox>
-        <h1>My Music of today upload</h1>
-        <Input
-        type="text"
-        ref={input_ref}
-        placeholder="music title"
-        onChange={onChangeInputTitleHandler}
-        />
-        <tr/>
-         <Input
-        type="text"
-        ref={input_ref}
-        placeholder="artist"
-        onChange={onChangeInputArtistHandler}
-        />
-        <tr/>
-        <Input
-        type="text"
-        ref={input_ref}
-        placeholder="album"
-        onChange={onChangeInputAlbumHandler}
-        />
-        <tr/>
-        {/* <Input
+          <h1>My Music of today upload</h1>
+          <Input
+            type="text"
+            ref={input_ref}
+            placeholder="music title"
+            onChange={onChangeInputTitleHandler}
+          />
+          <tr />
+          <Input
+            type="text"
+            ref={input_ref}
+            placeholder="artist"
+            onChange={onChangeInputArtistHandler}
+          />
+          <tr />
+          <Input
+            type="text"
+            ref={input_ref}
+            placeholder="album"
+            onChange={onChangeInputAlbumHandler}
+          />
+          <tr />
+          {/* <Input
         type="text"
         onChange={(e)=>{
             e.current?.click();
         }}> {musicname} </Input> */}
-        <input
-        ref={input_ref}
-        type="file"
-        id="input-file" 
-        name="music" 
-        onChange={(e)=>onChangeInputHandler(e)}/>
-        <tr/>
-        <UploadButton onClick={postHandler}>노래 업로드</UploadButton>
+          <input
+            ref={input_ref}
+            type="file"
+            id="input-file"
+            name="music"
+            onChange={(e) => onChangeInputHandler(e)}
+          />
+          <tr />
+          <UploadButton onClick={postHandler}>노래 업로드</UploadButton>
         </InputBox>
-        </React.Fragment>
-        </>
-    );
+      </React.Fragment>
+    </>
+  );
 };
 
 const InputBox = styled.form`
-width: 700px;
-margin: 20px auto;
-align-items: center;
-text-align:center;
-color:rgb(79, 188, 238);
-// input[type="file"] {
-//     position: absolute;
-//     width: 0;
-//     height: 0;
-//     padding: 0;
-//     margin: -1px;
-//     overflow: hidden;
-//     clip: rect(0, 0, 0, 0);
-//     border: 0;
-//   }
-label{
-    background-color : white;
+  width: 700px;
+  margin: 20px auto;
+  align-items: center;
+  text-align: center;
+  color: rgb(79, 188, 238);
+  // input[type="file"] {
+  //     position: absolute;
+  //     width: 0;
+  //     height: 0;
+  //     padding: 0;
+  //     margin: -1px;
+  //     overflow: hidden;
+  //     clip: rect(0, 0, 0, 0);
+  //     border: 0;
+  //   }
+  label {
+    background-color: white;
     color: rgb(79, 188, 238);
     padding: 5px;
     margin: 20px 250px;
-    border : 2px solid rgb(79, 188, 238);
+    border: 2px solid rgb(79, 188, 238);
     border-radius: 5px;
-        &:hover{
-    background-color: rgb(79, 188, 238);
-    color: white;
-}
-}
-` 
-
+    &:hover {
+      background-color: rgb(79, 188, 238);
+      color: white;
+    }
+  }
+`;
 
 const Input = styled.input`
-height: 30px;
-width: 250px;
-margin: 20px 250px;
-border: 1px solid rgb(79, 188, 238);
-border-radius: 5px;
-`
+  height: 30px;
+  width: 250px;
+  margin: 20px 250px;
+  border: 1px solid rgb(79, 188, 238);
+  border-radius: 5px;
+`;
 const FileInput = styled.input`
-background-color : white;
-color: rgb(79, 188, 238);
-padding: 5px;
-margin: 20px 250px;
-border : 2px solid rgb(79, 188, 238);
-border-radius: 5px;
-&:hover{
+  background-color: white;
+  color: rgb(79, 188, 238);
+  padding: 5px;
+  margin: 20px 250px;
+  border: 2px solid rgb(79, 188, 238);
+  border-radius: 5px;
+  &:hover {
     background-color: rgb(79, 188, 238);
     color: white;
-}
-`
+  }
+`;
 
 const UploadButton = styled.button`
-background-color : white;
-color: rgb(79, 188, 238);
-padding: 5px;
-margin: 20px 300px;
-border : 2px solid rgb(79, 188, 238);
-border-radius: 5px;
-&:hover{
+  background-color: white;
+  color: rgb(79, 188, 238);
+  padding: 5px;
+  margin: 20px 300px;
+  border: 2px solid rgb(79, 188, 238);
+  border-radius: 5px;
+  &:hover {
     background-color: rgb(79, 188, 238);
     color: white;
-}
-`
+  }
+`;
 
 export default Upload;
