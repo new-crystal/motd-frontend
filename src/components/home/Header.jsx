@@ -14,9 +14,9 @@ const Header = () => {
                 </Button>
             </TitleBox>
             <BtnBox>
-                <Button onClick={()=>navigate()}>sign up</Button>
                 <Button onClick={()=>navigate("/login")}>login</Button>
                 <Button onClick={()=>navigate("/profile")}>profile</Button>
+                <Button onClick={()=>navigate("/upload")}>upload</Button>
             </BtnBox>
         </HeaderBox>
     );
@@ -30,7 +30,7 @@ margin: 0px auto;
 `
 
 const TitleBox = styled.div`
-width: 700px;
+width: 600px;
 `
 const BtnBox = styled.div`
 margin: auto;

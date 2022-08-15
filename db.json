@@ -9,14 +9,8 @@
   "comments": [
     {
       "nickname": "susu",
-      "content": "노래 좋아요",
+      "content": "수정",
       "id": 1,
-      "musicId": "1"
-    },
-    {
-      "nickname": "susu",
-      "content": "노래 진짜 좋아요",
-      "id": 2,
       "musicId": "1"
     }
   ],

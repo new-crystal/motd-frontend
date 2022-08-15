@@ -11,7 +11,7 @@ import {
 
 const Comment = ({comment}) => {
 
-const { musicId } = useParams();
+const { musicId } = useParams(); 
 const dispatch = useDispatch();
 const [edit, setEdit] = useState(false);
 const [updatedComment, setUpdatedComment] = useState("");
