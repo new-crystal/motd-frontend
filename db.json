@@ -8,18 +8,21 @@
       "content": "내용입니다"
     },
     {
-      "title": "ㅇㅇㅇ",
-      "content": "ㅇㅇㅇㅇㅇ",
-      "userId": 1,
-      "nickname": "ss",
       "id": 2
     },
     {
-      "title": "나오는 게 정상이다",
-      "content": "나와라",
+      "title": "나는 작아보이고",
+      "content": "그래요...",
       "userId": 1,
       "nickname": "ss",
       "id": 3
+    },
+    {
+      "title": "ㅇㅇ",
+      "content": "ㅇㅇㅇ",
+      "userId": 1,
+      "nickname": "ss",
+      "id": 4
     }
   ],
   "comments": [

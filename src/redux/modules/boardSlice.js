@@ -6,8 +6,8 @@ export const __getPostsThunk = createAsyncThunk(
   "GET",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get(`${serverUrl}/posts`);
-      return thunkAPI.fulfillWithValue(data.data);
+      const { data } = await axios.get(`${serverUrl}/posts`);
+      return thunkAPI.fulfillWithValue(data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
     }
@@ -40,10 +40,8 @@ export const __updatePost = createAsyncThunk(
 
 export const __addPost = createAsyncThunk("ADD", async (payload, thunkAPI) => {
   try {
-    const data = await axios.post(`${serverUrl}/posts`, payload);
-    return (
-      axios.get(`${serverUrl}/posts`), thunkAPI.fulfillWithValue(data.data)
-    );
+    const { data } = await axios.post(`${serverUrl}/posts`, payload);
+    return thunkAPI.fulfillWithValue(data);
   } catch (err) {
     return thunkAPI.rejectWithValue(err);
   }
@@ -66,9 +64,11 @@ export const postsSlice = createSlice({
     },
     [__getPostsThunk.fulfilled]: (state, action) => {
       state.posts = action.payload;
+      state.isLoading = false;
     },
     [__getPostsThunk.rejected]: (state, action) => {
       state.error = action.payload;
+      state.isLoading = false;
     },
 
     // 게시글 삭제
@@ -77,10 +77,10 @@ export const postsSlice = createSlice({
     },
     [__deletePost.fulfilled]: (state, action) => {
       state.isLoading = false;
-      const target = state.posts.findIndex(
+      const target = state.posts.data.findIndex(
         (post) => post.id === action.payload
       );
-      state.posts.splice(target, 1);
+      state.posts.data.splice(target, 1);
     },
     [__deletePost.rejected]: (state, action) => {
       state.isLoading = false;
@@ -92,7 +92,7 @@ export const postsSlice = createSlice({
       state.isLoading = true;
     },
     [__updatePost.fulfilled]: (state, action) => {
-      const target = state.posts.findIndex(
+      const target = state.posts.data.findIndex(
         (post) => post.id === action.payload.id
       );
       state.isLoading = false;
@@ -104,7 +104,7 @@ export const postsSlice = createSlice({
     },
     // 게시글 추가
     [__addPost.fulfilled]: (state, action) => {
-      state.posts = [...state, action.payload];
+      state.posts.push(action.payload);
     },
   },
 });

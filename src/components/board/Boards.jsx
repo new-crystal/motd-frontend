@@ -1,19 +1,19 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { __getPostsThunk } from "../../redux/modules/boardSlice";
 
 const Boards = () => {
-  const postList = useSelector((state) => state.board.posts);
-  console.log(postList);
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.board.posts);
 
   useEffect(() => {
-    __getPostsThunk();
-  }, []);
+    dispatch(__getPostsThunk());
+  }, [dispatch]);
 
   return (
-    <>
-      {postList.map((post) => (
+    <div>
+      {posts?.map((post) => (
         <Board key={post.id}>
           <NicknameBox>
             <p>{post.nickname}</p>
@@ -23,7 +23,7 @@ const Boards = () => {
           </div>
         </Board>
       ))}
-    </>
+    </div>
   );
 };
 

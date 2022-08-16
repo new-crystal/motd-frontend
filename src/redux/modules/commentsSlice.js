@@ -6,8 +6,8 @@ export const __getCommentsThunk = createAsyncThunk(
   "GET_COMMENTS",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get(`${serverUrl}/comments`);
-      return thunkAPI.fulfillWithValue(data.data);
+      const { data } = await axios.get(`${serverUrl}/comments`);
+      return thunkAPI.fulfillWithValue(data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
     }
@@ -18,8 +18,10 @@ export const __getCommentsByMusicId = createAsyncThunk(
   "GET_COMMENT_BY_MUSIC_ID",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get(`${serverUrl}/comments?musicId=${payload}`);
-      return thunkAPI.fulfillWithValue(data.data);
+      const { data } = await axios.get(
+        `${serverUrl}/comments?musicId=${payload}`
+      );
+      return thunkAPI.fulfillWithValue(data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
     }
@@ -54,9 +56,9 @@ export const __addComment = createAsyncThunk(
   "ADD_COMMENT",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post(`${serverUrl}/comments`, payload);
+      const { data } = await axios.post(`${serverUrl}/comments`, payload);
       axios.get(`${serverUrl}/comments`);
-      return thunkAPI.fulfillWithValue(data.data);
+      return thunkAPI.fulfillWithValue(data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
     }
@@ -87,7 +89,7 @@ export const commentsSlice = createSlice({
     },
     [__getCommentsThunk.fulfilled]: (state, action) => {
       state.comments.isLoading = false;
-      state.comments.list = action.payload;
+      state.comments.data = action.payload;
     },
     [__getCommentsThunk.rejected]: (state, action) => {
       state.comments.isLoading = false;
@@ -144,7 +146,7 @@ export const commentsSlice = createSlice({
     },
     [__addComment.fulfilled]: (state, action) => {
       state.commentsByMusicId.isLoading = false;
-      state.commentsByMusicId.list = [...state, action.payload];
+      state.commentsByMusicId.data = [...state, action.payload];
     },
     [__addComment.rejected]: (state, action) => {
       state.commentsByMusicId.isLoading = false;
