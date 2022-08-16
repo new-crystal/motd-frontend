@@ -4,10 +4,10 @@ import { serverUrl } from ".";
 
 export const __getComment = createAsyncThunk(
   "GET_COMMENT",
-  async (arg, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      const data  = await axios.get(`${serverUrl}/comments/${arg}`);
-      return thunkAPI.fulfillWithValue(data);
+      const data = await axios.get(`${serverUrl}/comments/${payload}`);
+      return thunkAPI.fulfillWithValue(data.data);
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
@@ -29,14 +29,7 @@ const initialState = {
 export const commentSlice = createSlice({
   name: "comment",
   initialState,
-  reducers: {
-    clearComment: (state) => {
-      state.data.content = "";
-    },
-    globalEditModeToggle: (state, action) => {
-      state.isGlobalEditmode = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: {
     [__getComment.pending]: (state, action) => {
       state.isLoading = true;
@@ -52,5 +45,5 @@ export const commentSlice = createSlice({
   },
 });
 
-export const { clearComment, globalEditModeToggle } = commentSlice.actions;
+export const commentActions = commentSlice.actions;
 export default commentSlice.reducer;

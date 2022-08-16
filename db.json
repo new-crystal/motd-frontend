@@ -2,16 +2,43 @@
   "posts": [
     {
       "id": 1,
-      "title": "json-server",
-      "author": "typicode"
+      "userId": 1,
+      "nickname": "yuyu",
+      "title": "제목이겠죠?",
+      "content": "내용입니다"
+    },
+    {
+      "title": "ㅇㅇㅇ",
+      "content": "ㅇㅇㅇㅇㅇ",
+      "userId": 1,
+      "nickname": "ss",
+      "id": 2
+    },
+    {
+      "title": "나오는 게 정상이다",
+      "content": "나와라",
+      "userId": 1,
+      "nickname": "ss",
+      "id": 3
     }
   ],
   "comments": [
     {
       "nickname": "susu",
-      "content": "수정",
+      "content": {
+        "content": "",
+        "nickName": "",
+        "id": 0,
+        "musicId": 0
+      },
       "id": 1,
       "musicId": "1"
+    },
+    {
+      "musicId": "1",
+      "nickname": "susu",
+      "content": "수정되어라",
+      "id": 3
     }
   ],
   "profile": {

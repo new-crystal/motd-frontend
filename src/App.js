@@ -1,11 +1,10 @@
 import Header from "./components/home/Header";
-import Router from "./shared/Router"
-
+import Router from "./shared/Router";
 
 function App() {
   return (
     <div>
-      <Header/>
+      <Header />
       <Router />
     </div>
   );
