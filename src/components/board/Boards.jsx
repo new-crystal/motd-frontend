@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { __getPostsThunk } from "../../redux/modules/boardSlice";
 
 const Boards = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.board.posts);
 
@@ -14,7 +16,7 @@ const Boards = () => {
   return (
     <div>
       {posts?.map((post) => (
-        <Board key={post.id}>
+        <Board key={post.id} onClick={() => navigate(`/posts/${post.id}`)}>
           <NicknameBox>
             <p>{post.nickname}</p>
           </NicknameBox>

@@ -15,10 +15,16 @@ const Comment = ({ comment }) => {
   const [updatedComment, setUpdatedComment] = useState("");
   const [isShow, setIsShow] = useState(false);
 
-  const content = useSelector((state) => state.comment.list);
+  const { content } = useSelector((state) => state.comment);
+  console.log(content);
 
   const onDelButHandler = () => {
-    dispatch(__deleteComment(comment.id));
+    const result = window.confirm("삭제하시겠습니까?");
+    if (result) {
+      dispatch(__deleteComment(comment.id));
+    } else {
+      return;
+    }
   };
 
   const onUpdatedBtnHandler = () => {
@@ -42,18 +48,18 @@ const Comment = ({ comment }) => {
   const onCancelBtnHandler = () => {
     setEdit(false);
   };
+
   const onEditBtnHandler = () => {
     setEdit(true);
   };
+
   useEffect(() => {
     setUpdatedComment(content);
     setIsShow(true);
   }, [content, isShow]);
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(__getComment());
-    }, 300);
+    dispatch(__getComment());
     setIsShow(false);
   }, [edit, isShow]);
 

@@ -9,7 +9,7 @@ export const __getCommentsThunk = createAsyncThunk(
       const { data } = await axios.get(`${serverUrl}/comments`);
       return thunkAPI.fulfillWithValue(data);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      return thunkAPI.rejectWithValue(err.code);
     }
   }
 );
@@ -21,9 +21,10 @@ export const __getCommentsByMusicId = createAsyncThunk(
       const { data } = await axios.get(
         `${serverUrl}/comments?musicId=${payload}`
       );
+      console.log(data);
       return thunkAPI.fulfillWithValue(data);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      return thunkAPI.rejectWithValue(err.code);
     }
   }
 );
@@ -35,7 +36,7 @@ export const __deleteComment = createAsyncThunk(
       await axios.delete(`${serverUrl}/comments/${payload}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      return thunkAPI.rejectWithValue(err.code);
     }
   }
 );
@@ -146,7 +147,7 @@ export const commentsSlice = createSlice({
     },
     [__addComment.fulfilled]: (state, action) => {
       state.commentsByMusicId.isLoading = false;
-      state.commentsByMusicId.data = [...state, action.payload];
+      state.commentsByMusicId.data.push(action.payload);
     },
     [__addComment.rejected]: (state, action) => {
       state.commentsByMusicId.isLoading = false;

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
+import { Pagination } from "@mui/material";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -41,38 +42,40 @@ const HomePage = () => {
           </MusicBox>
         </Box>
       </Container>
-      <Box>
-        <MusicBox onClick={() => navigate(`/musics/${musicId}`)}>
-          <MusicImgBox
-            url={
-              "https://image.bugsm.co.kr/album/images/1000/40780/4078016.jpg"
-            }
-          />
-          <MusicText>Attention</MusicText>
-          <MusicText> NewJeans</MusicText>
-        </MusicBox>
+      <Container>
+        <Box>
+          <MusicBox onClick={() => navigate(`/musics/${musicId}`)}>
+            <MusicImgBox
+              url={
+                "https://image.bugsm.co.kr/album/images/1000/40780/4078016.jpg"
+              }
+            />
+            <MusicText>Attention</MusicText>
+            <MusicText> NewJeans</MusicText>
+          </MusicBox>
 
-        <MusicBox>
-          <MusicImgBox
-            url={
-              "https://image.bugsm.co.kr/album/images/1000/40780/4078016.jpg"
-            }
-          />
-          <MusicText>Hype Boy</MusicText>
-          <MusicText> NewJeans</MusicText>
-        </MusicBox>
+          <MusicBox>
+            <MusicImgBox
+              url={
+                "https://image.bugsm.co.kr/album/images/1000/40780/4078016.jpg"
+              }
+            />
+            <MusicText>Hype Boy</MusicText>
+            <MusicText> NewJeans</MusicText>
+          </MusicBox>
 
-        <MusicBox>
-          <MusicImgBox
-            url={
-              "https://image.bugsm.co.kr/album/images/1000/204845/20484595.jpg"
-            }
-          />
-          <MusicText> FOREVER 1</MusicText>
-          <MusicText>소녀시대</MusicText>
-        </MusicBox>
-      </Box>
-      <Container></Container>
+          <MusicBox>
+            <MusicImgBox
+              url={
+                "https://image.bugsm.co.kr/album/images/1000/204845/20484595.jpg"
+              }
+            />
+            <MusicText> FOREVER 1</MusicText>
+            <MusicText>소녀시대</MusicText>
+          </MusicBox>
+        </Box>
+      </Container>
+      <Pagination />
     </>
   );
 };
@@ -80,10 +83,11 @@ const HomePage = () => {
 const Container = styled.div`
   width: 1000px;
   height: 500px;
-  margin: 0px auto;
+  margin: 0px auto 0px auto;
 `;
 const Box = styled.div`
   display: flex;
+  margin: 0px auto;
 `;
 
 const Text = styled.h2`

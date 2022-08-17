@@ -8,8 +8,8 @@ export const __getComment = createAsyncThunk(
     try {
       const { data } = await axios.get(`${serverUrl}/comments/${payload}`);
       return thunkAPI.fulfillWithValue(data);
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e);
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );

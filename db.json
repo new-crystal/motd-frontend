@@ -1,25 +1,15 @@
 {
   "posts": [
     {
-      "id": 1,
+      "title": "수정은 수정이가",
+      "content": "추가는 누가하지",
       "userId": 1,
-      "nickname": "yuyu",
-      "title": "제목이겠죠?",
-      "content": "내용입니다"
-    },
-    {
+      "nickname": "ss",
       "id": 2
     },
     {
-      "title": "나는 작아보이고",
-      "content": "그래요...",
-      "userId": 1,
-      "nickname": "ss",
-      "id": 3
-    },
-    {
-      "title": "ㅇㅇ",
-      "content": "ㅇㅇㅇ",
+      "title": "추가",
+      "content": "추가",
       "userId": 1,
       "nickname": "ss",
       "id": 4
@@ -27,21 +17,16 @@
   ],
   "comments": [
     {
-      "nickname": "susu",
-      "content": {
-        "content": "",
-        "nickName": "",
-        "id": 0,
-        "musicId": 0
-      },
-      "id": 1,
-      "musicId": "1"
-    },
-    {
       "musicId": "1",
       "nickname": "susu",
-      "content": "수정되어라",
+      "content": "1번 게시글입니다.",
       "id": 3
+    },
+    {
+      "musicId": "2",
+      "nickname": "susu",
+      "content": "2번게시글입니다.",
+      "id": 5
     }
   ],
   "profile": {

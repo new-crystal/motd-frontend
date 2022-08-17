@@ -15,7 +15,7 @@ const Header = () => {
       <BtnBox>
         <Button onClick={() => navigate("/login")}>login</Button>
         <Button onClick={() => navigate("/upload")}>upload</Button>
-        <Button onClick={() => navigate("/board")}>board</Button>
+        <Button onClick={() => navigate("/posts")}>board</Button>
       </BtnBox>
     </HeaderBox>
   );

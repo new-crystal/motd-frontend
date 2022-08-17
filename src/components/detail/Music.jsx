@@ -23,7 +23,7 @@ const Music = () => {
             setLike(!like);
           }}
         >
-          💙
+          {like ? "💙" : "🤍"}
         </LikeBtn>
         <p>{like ? 1 : 0}</p>
       </MusicBox>
