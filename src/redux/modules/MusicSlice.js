@@ -6,17 +6,17 @@ export const __getMusicsThunk = createAsyncThunk(
   "GET",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get(`${serverUrl}/musics`);
-      return thunkAPI.fulfillWithValue(data.data);
+      const { data } = await axios.get(`${serverUrl}/musics`);
+      return thunkAPI.fulfillWithValue(data);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      return thunkAPI.rejectWithValue(err.code);
     }
   }
 );
 
 export const __addMusic = createAsyncThunk("ADD", async (payload, thunkAPI) => {
   try {
-    const data = await axios.post(
+    const { data } = await axios.post(
       `http://3.34.47.211/api/musics?title=${payload.title}&artist=${payload.artist}&album=${payload.album}`,
       payload.formData,
       {
@@ -26,7 +26,7 @@ export const __addMusic = createAsyncThunk("ADD", async (payload, thunkAPI) => {
       }
     );
     axios.get(`${serverUrl}/musics`);
-    return thunkAPI.fulfillWithValue(data.data);
+    return thunkAPI.fulfillWithValue(data);
   } catch (err) {
     return thunkAPI.rejectWithValue(err);
   }

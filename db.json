@@ -2,7 +2,7 @@
   "posts": [
     {
       "title": "수정은 수정이가",
-      "content": "추가는 누가하지",
+      "content": "추가는 누가하지 추가는 하경님이~",
       "userId": 1,
       "nickname": "ss",
       "id": 2
@@ -13,6 +13,13 @@
       "userId": 1,
       "nickname": "ss",
       "id": 4
+    },
+    {
+      "title": "dd",
+      "content": "dd",
+      "userId": 1,
+      "nickname": "ss",
+      "id": 5
     }
   ],
   "comments": [

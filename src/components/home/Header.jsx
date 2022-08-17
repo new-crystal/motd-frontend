@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(false);
 
   return (
     <HeaderBox>
@@ -13,7 +14,11 @@ const Header = () => {
         </Button>
       </TitleBox>
       <BtnBox>
-        <Button onClick={() => navigate("/login")}>login</Button>
+        {user ? (
+          <Button onClick={() => navigate("/my_page")}>My page</Button>
+        ) : (
+          <Button onClick={() => navigate("/login")}>login</Button>
+        )}
         <Button onClick={() => navigate("/upload")}>upload</Button>
         <Button onClick={() => navigate("/posts")}>board</Button>
       </BtnBox>

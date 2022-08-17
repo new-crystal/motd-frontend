@@ -1,81 +1,84 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
-import { Pagination } from "@mui/material";
+import Pagination from "./PaginationCopy";
+import MusicBoxPage from "./MusicBoxPage";
+import { RESP } from "../../response";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const musicId = 1;
+  const [posts, setPosts] = useState([]);
+  const [likePosts, setLikePosts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(3);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      //const data = await axios.get("/api/Musics?page=1")
+      const data = RESP.MUSICLIST.result.musicList;
+      setPosts(data);
+    };
+    fetchData();
+  });
+
+  useEffect(() => {
+    const fetchLikeData = async () => {
+      //const likeData = await axios.get("/api/Musics?page=1")
+      const likeData = RESP.LIKELIST.result.musicList;
+      setLikePosts(likeData);
+    };
+    fetchLikeData();
+  });
+
+  const indexLastPost = page * limit;
+  const indexFirstPost = indexLastPost - limit;
+
+  const current = (posts) => {
+    let current = 0;
+    current = posts.slice(indexFirstPost, indexLastPost);
+    return current;
+  };
+
+  const currentPost = (likePosts) => {
+    let currentPost = 0;
+    currentPost = likePosts.slice(indexFirstPost, indexLastPost);
+    return currentPost;
+  };
+
   return (
     <>
       <Container>
-        <Text>My Music of today</Text>
+        <Text>🎧My Music of today🎧</Text>
         <Box>
-          <MusicBox onClick={() => navigate(`/musics/${musicId}`)}>
-            <MusicImgBox
-              url={
-                "https://image.bugsm.co.kr/album/images/1000/40780/4078016.jpg"
-              }
-            />
-            <MusicText>Attention</MusicText>
-            <MusicText> NewJeans</MusicText>
-          </MusicBox>
-
-          <MusicBox>
-            <MusicImgBox
-              url={
-                "https://image.bugsm.co.kr/album/images/1000/40780/4078016.jpg"
-              }
-            />
-            <MusicText>Hype Boy</MusicText>
-            <MusicText> NewJeans</MusicText>
-          </MusicBox>
-
-          <MusicBox>
-            <MusicImgBox
-              url={
-                "https://image.bugsm.co.kr/album/images/1000/204845/20484595.jpg"
-              }
-            />
-            <MusicText> FOREVER 1</MusicText>
-            <MusicText>소녀시대</MusicText>
-          </MusicBox>
+          {current(posts)?.map((list, idx) => {
+            return <MusicBoxPage list={list} key={idx} />;
+          })}
         </Box>
       </Container>
+
+      <Pagination
+        totalPost={posts.length}
+        setPage={setPage}
+        page={page}
+        limit={limit}
+      />
+
       <Container>
+        <Text>💙Music of I like💙</Text>
         <Box>
-          <MusicBox onClick={() => navigate(`/musics/${musicId}`)}>
-            <MusicImgBox
-              url={
-                "https://image.bugsm.co.kr/album/images/1000/40780/4078016.jpg"
-              }
-            />
-            <MusicText>Attention</MusicText>
-            <MusicText> NewJeans</MusicText>
-          </MusicBox>
-
-          <MusicBox>
-            <MusicImgBox
-              url={
-                "https://image.bugsm.co.kr/album/images/1000/40780/4078016.jpg"
-              }
-            />
-            <MusicText>Hype Boy</MusicText>
-            <MusicText> NewJeans</MusicText>
-          </MusicBox>
-
-          <MusicBox>
-            <MusicImgBox
-              url={
-                "https://image.bugsm.co.kr/album/images/1000/204845/20484595.jpg"
-              }
-            />
-            <MusicText> FOREVER 1</MusicText>
-            <MusicText>소녀시대</MusicText>
-          </MusicBox>
+          {currentPost(likePosts)?.map((list, idx) => {
+            return <MusicBoxPage list={list} key={idx} />;
+          })}
         </Box>
       </Container>
-      <Pagination />
+      <Pagination
+        totalPost={posts.length}
+        setPage={setPage}
+        page={page}
+        limit={limit}
+      />
     </>
   );
 };
@@ -94,21 +97,4 @@ const Text = styled.h2`
   color: rgb(79, 188, 238);
 `;
 
-const MusicBox = styled.div`
-  width: 300px;
-  height: 400px;
-  margin: 10px;
-`;
-
-const MusicImgBox = styled.div`
-  width: 200px;
-  height: 200px;
-  background-position: center;
-  background-size: cover;
-  background-image: url(${(props) => props.url});
-`;
-const MusicText = styled.p`
-  color: #023e8a;
-  text-align: center;
-`;
 export default HomePage;

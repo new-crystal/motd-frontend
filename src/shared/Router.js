@@ -7,6 +7,7 @@ import NotFound from "../pages/NotFound";
 import Upload from "../pages/Upload";
 import Board from "../pages/Board";
 import BoardDetail from "../pages/BoardDetail";
+import MyPage from "../pages/MyPage";
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
       <Route path="/upload" element={<Upload />} />
       <Route path="/posts" element={<Board />} />
       <Route path="/posts/:id" element={<BoardDetail />} />
+      <Route path="/my_page" element={<MyPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

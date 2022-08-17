@@ -5,12 +5,21 @@ import { useState } from "react";
 import MusicImage from "./MusicImage";
 import styled from "styled-components";
 import { RESP } from "../../response";
+import axios from "axios";
+import { useParams } from "react-router";
 
 const Music = () => {
+  const { musicId } = useParams();
   const [like, setLike] = useState(false);
-
   const resp = RESP.MUSICS;
+
+  //const data = axios.get(`/musics/${musicId}`)
   const data = resp.result.musicDesc;
+
+  const onClickLike = (like) => {
+    //axios.post("", like);
+    setLike(!like);
+  };
 
   return (
     <Container>
@@ -20,12 +29,12 @@ const Music = () => {
         <p>{data.album}</p>
         <LikeBtn
           onClick={() => {
-            setLike(!like);
+            onClickLike(like);
           }}
         >
           {like ? "💙" : "🤍"}
         </LikeBtn>
-        <p>{like ? 1 : 0}</p>
+        <p>{like ? 1000 : 999}</p>
       </MusicBox>
 
       <MusicImage />
