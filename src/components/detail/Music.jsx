@@ -1,25 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { useState } from "react";
 import MusicImage from "./MusicImage";
 import styled from "styled-components";
-import { RESP } from "../../response";
 import axios from "axios";
 import { useParams } from "react-router";
 
 const Music = () => {
   const { musicId } = useParams();
   const [like, setLike] = useState(false);
-  const resp = RESP.MUSICS;
+  const [data, setData] = useState("");
 
-  //const data = axios.get(`/musics/${musicId}`)
-  const data = resp.result.musicDesc;
-
-  const onClickLike = (like) => {
-    //axios.post("", like);
-    setLike(!like);
+  const fetchResponse = async () => {
+    const response = await axios.get(
+      `http://3.34.47.211/api/musics/${musicId}`
+    );
+    setData(response.data.result.musicDesc);
   };
+
+  const onClickLike = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.patch(
+        `http://3.34.47.211/api/musics/${musicId}/like`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setLike(!like);
+      return console.log(response);
+    } catch (err) {
+      return console.log(err);
+    }
+  };
+  useEffect(() => {
+    fetchResponse();
+  }, []);
 
   return (
     <Container>
@@ -41,7 +61,8 @@ const Music = () => {
 
       <StyledPlayer
         //autoPlay
-        src="http://res.cloudinary.com/alick/video/upload/v1502689683/Luis_Fonsi_-_Despacito_ft._Daddy_Yankee_uyvqw9.mp3"
+        volume={0.1}
+        src={data.musicUrl}
       />
     </Container>
   );

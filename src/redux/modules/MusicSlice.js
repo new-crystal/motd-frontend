@@ -17,15 +17,16 @@ export const __getMusicsThunk = createAsyncThunk(
 export const __addMusic = createAsyncThunk("ADD", async (payload, thunkAPI) => {
   try {
     const { data } = await axios.post(
-      `http://3.34.47.211/api/musics?title=${payload.title}&artist=${payload.artist}&album=${payload.album}`,
+      `http://3.34.47.211:3000/api/musics?title=${payload.title}&artist=${payload.artist}&album=${payload.album}`,
       payload.formData,
       {
         headers: {
           "Content-type": "multipart/form-data",
+          Authorization: `Bearer ${payload.token}`,
         },
       }
     );
-    axios.get(`${serverUrl}/musics`);
+    console.log(data);
     return thunkAPI.fulfillWithValue(data);
   } catch (err) {
     return thunkAPI.rejectWithValue(err);
@@ -34,11 +35,6 @@ export const __addMusic = createAsyncThunk("ADD", async (payload, thunkAPI) => {
 
 const initialState = {
   musics: {
-    list: [],
-    isLoading: false,
-    error: null,
-  },
-  commentsByMusicId: {
     list: [],
     isLoading: false,
     error: null,
@@ -65,15 +61,15 @@ export const commentsSlice = createSlice({
 
     // 음악 게시글 추가
     [__addMusic.pending]: (state) => {
-      state.commentsByMusicId.isLoading = true;
+      state.musics.isLoading = true;
     },
     [__addMusic.fulfilled]: (state, action) => {
-      state.commentsByMusicId.isLoading = false;
-      state.commentsByMusicId.list = [...state, action.payload];
+      state.musics.isLoading = false;
+      state.musics.data = action.payload;
     },
     [__addMusic.rejected]: (state, action) => {
-      state.commentsByMusicId.isLoading = false;
-      state.commentsByMusicId.error = action.payload;
+      state.musics.isLoading = false;
+      state.musics.error = action.payload;
     },
   },
 });

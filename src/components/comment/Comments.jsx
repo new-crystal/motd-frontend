@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { __getCommentsByMusicId } from "../../redux/modules/commentsSlice";
+import { decodeToken } from "react-jwt";
 import AddCommentForm from "./AddComment";
 import Comment from "./Comment";
 import styled from "styled-components";
@@ -11,6 +12,8 @@ const Comments = () => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const { data } = useSelector((state) => state.comments.commentsByMusicId);
+  const token = localStorage.getItem("token");
+  const payload = decodeToken(token);
 
   useEffect(() => {
     if (show) {
@@ -20,13 +23,15 @@ const Comments = () => {
 
   return (
     <WrapBox show={show}>
-      <CommentBtn
-        onClick={() => {
-          setShow(!show);
-        }}
-      >
-        {show ? "취소" : " 댓글 작성하기 !"}
-      </CommentBtn>
+      {payload.userId !== "" ? (
+        <CommentBtn
+          onClick={() => {
+            setShow(!show);
+          }}
+        >
+          {show ? "CANCEL" : " WRITING COMMENTS !"}
+        </CommentBtn>
+      ) : null}
       {show ? <AddCommentForm /> : null}
       <WrapBox>
         {data?.map((comment) => (
@@ -48,7 +53,9 @@ const CommentBtn = styled.button`
   border: 2px solid rgb(79, 188, 238);
   border-radius: 10px;
   padding: 7px;
-  margin: 10px 300px;
+  margin: 10px 250px;
+  width: 200px;
+  height: 40px;
   font-weight: bold;
   &:hover {
     background-color: rgb(79, 188, 238);

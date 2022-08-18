@@ -1,9 +1,13 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { __addMusic } from "../redux/modules/MusicSlice";
+import { Navigate, useNavigate } from "react-router";
 
 const Upload = () => {
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
   const [selectedFile, setSelectedFile] = useState(null);
   const input_ref = useRef();
   const [title, setTitle] = useState();
@@ -31,24 +35,9 @@ const Upload = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("userUploadImage", selectedFile);
-    dispatch(__addMusic({ title, artist, album, formData }));
-
-    // axios
-    //   .post(
-    //     `http://3.34.47.211:3000/api/musics?title=${title}&artist=${artist}&album=${album}`,
-    //     formData,
-    //     {
-    //       headers: {
-    //         "Content-type": "multipart/form-data",
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     alert("파일 업로드 성공!");
-    //   })
-    //   .catch((err) => {
-    //     alert("파일 업로드 실패!");
-    //   });
+    dispatch(__addMusic({ title, artist, album, formData, token }));
+    alert("업로드가 완료되었습니다!");
+    navigate("/");
   };
 
   return (
@@ -62,29 +51,29 @@ const Upload = () => {
             placeholder="music title"
             onChange={onChangeInputTitleHandler}
           />
-          <tr />
+          <br />
           <Input
             type="text"
             ref={input_ref}
             placeholder="artist"
             onChange={onChangeInputArtistHandler}
           />
-          <tr />
+          <br />
           <Input
             type="text"
             ref={input_ref}
             placeholder="album"
             onChange={onChangeInputAlbumHandler}
           />
-          <tr />
+          <br />
           <input
             ref={input_ref}
             type="file"
             name="music"
             onChange={(e) => onChangeInputHandler(e)}
           />
-          <tr />
-          <UploadButton onClick={postHandler}>노래 업로드</UploadButton>
+          <br />
+          <UploadButton onClick={postHandler}>UPLOAD</UploadButton>
         </InputBox>
       </React.Fragment>
     </>

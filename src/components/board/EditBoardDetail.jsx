@@ -3,14 +3,16 @@ import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { __updatePost } from "../../redux/modules/boardSlice";
 import { useEffect } from "react";
+import { decodeToken } from "react-jwt";
 
 const EditBoardDetail = ({ setEdit, id, nickname, userId, title, content }) => {
   const editTitle_ref = useRef();
   const editContent_ref = useRef();
   const dispatch = useDispatch();
-
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
+  const token = localStorage.getItem("token");
+  const payload = decodeToken(token);
 
   const onClickEditHandler = (e) => {
     e.preventDefault();
@@ -57,9 +59,13 @@ const EditBoardDetail = ({ setEdit, id, nickname, userId, title, content }) => {
         maxLength={50}
         onChange={(e) => setEditContent(e.target.value)}
       />
-      <tr />
-      <Button onClick={() => setEdit(false)}>취소</Button>
-      <Button onClick={(e) => onClickEditHandler(e)}>저장</Button>
+      <br />
+      {payload.userId === userId ? (
+        <>
+          <Button onClick={() => setEdit(false)}>취소</Button>
+          <Button onClick={(e) => onClickEditHandler(e)}>저장</Button>
+        </>
+      ) : null}
     </div>
   );
 };

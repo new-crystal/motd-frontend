@@ -3,7 +3,7 @@ import axios from "axios";
 import { serverUrl } from ".";
 
 export const __getPostsThunk = createAsyncThunk(
-  "GET",
+  "GET_BOARD",
   async (payload, thunkAPI) => {
     try {
       const { data } = await axios.get(`${serverUrl}/posts`);
@@ -15,7 +15,7 @@ export const __getPostsThunk = createAsyncThunk(
 );
 
 export const __deletePost = createAsyncThunk(
-  "DELETE",
+  "DELETE_BOARD",
   async (payload, thunkAPI) => {
     try {
       await axios.delete(`${serverUrl}/posts/${payload}`);
@@ -40,7 +40,11 @@ export const __updatePost = createAsyncThunk(
 
 export const __addPost = createAsyncThunk("ADD", async (payload, thunkAPI) => {
   try {
-    const { data } = await axios.post(`${serverUrl}/posts`, payload);
+    const { data } = await axios.post("http://3.34.47.211/api/posts", payload, {
+      headers: {
+        Authorization: `Bearer ${payload.token}`,
+      },
+    });
     return thunkAPI.fulfillWithValue(data);
   } catch (err) {
     return thunkAPI.rejectWithValue(err);

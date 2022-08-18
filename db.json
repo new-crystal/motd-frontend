@@ -1,13 +1,6 @@
 {
   "posts": [
     {
-      "title": "수정은 수정이가",
-      "content": "추가는 누가하지 추가는 하경님이~",
-      "userId": 1,
-      "nickname": "ss",
-      "id": 2
-    },
-    {
       "title": "추가",
       "content": "추가",
       "userId": 1,
@@ -20,6 +13,13 @@
       "userId": 1,
       "nickname": "ss",
       "id": 5
+    },
+    {
+      "title": "권지영 매니저님 최",
+      "content": "왜죠? 죄송합니다...죄송해요...네스팅문제....?",
+      "userId": 1,
+      "nickname": "ss",
+      "id": 6
     }
   ],
   "comments": [
@@ -34,6 +34,18 @@
       "nickname": "susu",
       "content": "2번게시글입니다.",
       "id": 5
+    },
+    {
+      "musicId": "1",
+      "nickname": "susu",
+      "content": "노래 정말 좋아요~",
+      "id": 6
+    },
+    {
+      "musicId": "1",
+      "nickname": "susu",
+      "content": "등록",
+      "id": 7
     }
   ],
   "profile": {

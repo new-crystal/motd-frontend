@@ -1,17 +1,25 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import AddBoard from "./AddBoard";
 import Boards from "./Boards";
+import { decodeToken } from "react-jwt";
 
 const BoardPage = () => {
   const [show, setShow] = useState(true);
+  const token = localStorage.getItem("token");
+  const payload = decodeToken(token);
 
   return (
     <Container>
-      <h1> My Board of today</h1>
+      <h1> Board of today</h1>
       {show ? (
         <>
-          <Button onClick={() => setShow(!show)}>ADD</Button>
+          {payload.userId !== "" ? (
+            <Button onClick={() => setShow(false)}>ADD</Button>
+          ) : (
+            <></>
+          )}
+
           <Boards />
         </>
       ) : (

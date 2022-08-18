@@ -8,13 +8,14 @@ import Upload from "../pages/Upload";
 import Board from "../pages/Board";
 import BoardDetail from "../pages/BoardDetail";
 import MyPage from "../pages/MyPage";
+import Auth from "../pages/Auth";
 
 const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/join" />
+      <Route path="/join" element={<Auth />} />
       <Route path="/musics/:musicId" element={<Detail />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/upload" element={<Upload />} />

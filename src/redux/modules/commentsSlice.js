@@ -21,7 +21,6 @@ export const __getCommentsByMusicId = createAsyncThunk(
       const { data } = await axios.get(
         `${serverUrl}/comments?musicId=${payload}`
       );
-      console.log(data);
       return thunkAPI.fulfillWithValue(data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err.code);
@@ -57,10 +56,22 @@ export const __addComment = createAsyncThunk(
   "ADD_COMMENT",
   async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.post(`${serverUrl}/comments`, payload);
-      axios.get(`${serverUrl}/comments`);
+      const data = await axios.post(
+        "http://3.34.47.211/api/comments",
+        {
+          musicId: payload.musicId,
+          content: payload.content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`,
+          },
+        }
+      );
+      axios.get(`${serverUrl}/api/comments`);
       return thunkAPI.fulfillWithValue(data);
     } catch (err) {
+      console.log(err);
       return thunkAPI.rejectWithValue(err);
     }
   }

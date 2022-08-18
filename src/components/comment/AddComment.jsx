@@ -3,13 +3,16 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { __addComment } from "../../redux/modules/commentsSlice";
 import styled from "styled-components";
+import { decodeToken } from "react-jwt";
 
 const AddCommentForm = () => {
   const dispatch = useDispatch();
   const { musicId } = useParams();
+  const token = localStorage.getItem("token");
+  const payload = decodeToken(token);
 
   const [comment, setComment] = useState({
-    nickname: "susu",
+    nickname: payload.nickname,
     content: "",
   });
 
@@ -18,9 +21,10 @@ const AddCommentForm = () => {
     if (comment.content.trim() === "") {
       return alert("댓글을 입력해주세요.");
     }
-    dispatch(__addComment({ musicId, ...comment }));
+
+    dispatch(__addComment({ musicId, ...comment, token }));
     setComment({
-      nickname: "",
+      nickname: payload.nickname,
       content: "",
     });
   };
@@ -44,7 +48,7 @@ const AddCommentForm = () => {
         onChange={onChangeInputHandler}
       />
       <Button type="submit" onClick={onAddCommentButtonHandler}>
-        💾
+        ADD
       </Button>
     </CommentForm>
   );

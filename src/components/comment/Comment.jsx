@@ -16,7 +16,6 @@ const Comment = ({ comment }) => {
   const [isShow, setIsShow] = useState(false);
 
   const { content } = useSelector((state) => state.comment);
-  console.log(content);
 
   const onDelButHandler = () => {
     const result = window.confirm("삭제하시겠습니까?");
@@ -76,8 +75,8 @@ const Comment = ({ comment }) => {
             />
           </div>
           <div>
-            <Button onClick={onCancelBtnHandler}> 취소</Button>
-            <Button onClick={onUpdatedBtnHandler}> 저장</Button>
+            <Button onClick={onCancelBtnHandler}>CANCEL</Button>
+            <Button onClick={onUpdatedBtnHandler}>ADD</Button>
           </div>
         </>
       ) : (
@@ -87,8 +86,8 @@ const Comment = ({ comment }) => {
             <Content>{comment.content}</Content>
 
             <div>
-              <Button onClick={onEditBtnHandler}>수정</Button>
-              <Button onClick={onDelButHandler}>삭제</Button>
+              <Button onClick={onEditBtnHandler}>EDIT</Button>
+              <Button onClick={onDelButHandler}>DELETE</Button>
             </div>
           </CommentBox>
         </>

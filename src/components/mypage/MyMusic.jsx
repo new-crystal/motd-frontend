@@ -1,18 +1,21 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { RESP } from "../../response";
 import MyMusicList from "./MyMusicList";
 
 const MyMusic = () => {
   const [upload, setUpload] = useState("");
 
+  const fetchUpload = async () => {
+    const response = await axios.get(
+      "http://3.34.47.211/api/user/my-upload-musics?page=1"
+    );
+
+    const data = response.data.result.MyMusicList;
+    setUpload(data);
+  };
+
   useEffect(() => {
-    const fetchUpload = async () => {
-      //const data = await axios.get("")
-      const data = RESP.LIKELIST.result.musicList;
-      setUpload(data);
-    };
     fetchUpload();
   }, []);
 

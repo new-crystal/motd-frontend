@@ -1,33 +1,137 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-// import { Form } from "../components/Form";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { decodeToken } from "react-jwt";
 
 const Login = () => {
-   
-    return (
+  const navigate = useNavigate();
+
+  const [userinfo, setUserInfo] = useState({
+    email: "",
+    password: "",
+    nickname: "",
+  });
+
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputPw, setInputPw] = useState("");
+
+  // input data의 변화가 있을 때마다 value 값을 변경해서 useState 해준다.
+  // const [isLogin, setIsLogin] = useState(false);
+
+  const handleInputEmail = (e) => {
+    setInputEmail(e.target.value); //(e) state를 바꿔줌  "" => e.target.value로
+    console.log(inputEmail);
+    //setUserInfo(userinfo.email=inputEmail)
+  };
+
+  const handleInputPw = (e) => {
+    setInputPw(e.target.value);
+    console.log(inputPw);
+    //setUserInfo(userinfo.password=inputPw)
+  };
+
+  const onSubmitHandler = async (userinfo) => {
+    console.log(inputEmail, inputPw);
+    try {
+      const response = await axios.post(
+        "http://3.34.47.211/api/login",
+        {
+          email: inputEmail,
+          password: inputPw,
+        },
+        {
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            //"Access-Control-Allow-Origin:*"
+          },
+        }
+      );
+
+      const token = response.data.result.accessToken;
+      localStorage.setItem("token", token);
+      const payload = decodeToken(token);
+      alert(`${payload.nickname} 님 환영합니다.`);
+    } catch (err) {
+      console.log(err);
+      alert("로그인에 실패하셨습니다!");
+    }
+  };
+
+  // if (email === "" || password === "") {
+  //   window.alert("이메일과 비밀번호를 입력해주세요.")
+  //   return;
+  // } if (!emailCheck(id)) {
+  //   window.alert("이메일 형식이 맞지 않습니다.")
+  // }
+  // dispatch(userinfo.login)
+
+  // const onClickLogin = () => {
+  //   console.log('click login')
+  // }
+
+  // 페이지 렌더링 후 가장 처음 호출되는 함수
+  // useEffect(() => {
+  //   axios.post('/login/user_inform')
+  //   .then(response => console.log(response))
+  //   .catch()
+  // }, [])
+
+  return (
     <>
       <Base>
         <Box>
           <BarTxt1>Login to your account</BarTxt1>
           <ContentBox>
-            <Id>
-                <input 
-                    type="text"
-                    placeholder="ID">
-                </input>
-            </Id>
+            <Email>
+              <input
+                type="email"
+                id="email"
+                placeholder="E-mail"
+                name="input_email"
+                value={inputEmail}
+                onChange={handleInputEmail}
+              ></input>
+            </Email>
             <PassWord>
-                <input
-                    type="text"
-                    placeholder="PassWord">
-                </input>
+              <input
+                type="text"
+                id="password"
+                placeholder="PassWord"
+                name="input_pw"
+                value={inputPw}
+                onChange={handleInputPw}
+              ></input>
             </PassWord>
           </ContentBox>
           <Btn>
-            <LoginBtn> LOGIN </LoginBtn>
-            <br/>
-            <ToLoginBtn>Would you like to sign up?</ToLoginBtn>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                onSubmitHandler(userinfo);
+              }}
+            >
+              <LoginBtn
+              // else if((state.id === '') || (state.pw === '')) {
+              //   setState({
+              //     id : '',
+              //     passwd : '',
+              //     error: '아이디와 비밀번호를 모두 입력해주세요',
+              //   })
+              // }
+              >
+                {" "}
+                Sign In{" "}
+              </LoginBtn>
+            </form>
+            <br />
+            <ToLoginBtn
+              onClick={() => {
+                navigate("/join");
+              }}
+            >
+              Would you like to Sign Up?
+            </ToLoginBtn>
           </Btn>
         </Box>
       </Base>
@@ -77,13 +181,13 @@ const Box = styled.div`
   width: 400px;
   height: 470px;
   text-align: center;
-  
+  margin-top: 70px;
   //border: 2px solid white;
   //border-radius: 10px;
   background-color: white;
 `;
 
-const Id = styled.div`
+const Email = styled.div`
   font-size: medium;
   color: rgb(79, 188, 238);
   & input {
@@ -95,8 +199,10 @@ const Id = styled.div`
     margin-bottom: 25px;
     margin-top: 4px;
     color: black;
-    &:focus {outline: 1px solid rgb(79, 188, 238)};
-  } 
+    &:focus {
+      outline: 1px solid rgb(79, 188, 238);
+    }
+  }
   /* & input {
     border: 1px solid rgb(160, 160, 160);
     width: 300px;
@@ -119,7 +225,9 @@ const PassWord = styled.div`
     padding-left: 10px;
     margin-top: 4px;
     color: black;
-    &:focus {outline: 1px solid rgb(79, 188, 238)}
+    &:focus {
+      outline: 1px solid rgb(79, 188, 238);
+    }
   }
 `;
 // const TitleInput = styled.input`
@@ -147,23 +255,10 @@ const LoginBtn = styled.button`
 `;
 
 const ToLoginBtn = styled.button`
-    width: 400px;
-    height: 70px;
-    border: 2px solid #e9e9e9;
-    cursor: pointer;
-    color: #676767;
-
-    //&:focus {outline: 1px solid rgb(79, 188, 238)};
-    
-`
-// const CancelBtn = styled.button`
-//   width: 120px;
-//   padding: 10px;
-//   margin: 5px 0px 0px 20px;
-//   border: 2px solid rgb(79, 188, 238);
-//   border-radius: 0px;
-//   background-color: rgb(79, 188, 238);
-//   color: white;
-// `;
-        
-
+  width: 400px;
+  height: 70px;
+  border: 2px solid #e9e9e9;
+  cursor: pointer;
+  color: #676767;
+`;
+//&:focus {outline: 1px solid rgb(79, 188, 238)};`

@@ -4,7 +4,14 @@ import styled from "styled-components";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(false);
+
+  const token = localStorage.getItem("token");
+
+  const onClickLogout = () => {
+    localStorage.removeItem("token");
+    const token = localStorage.getItem("token");
+    navigate("/");
+  };
 
   return (
     <HeaderBox>
@@ -14,13 +21,19 @@ const Header = () => {
         </Button>
       </TitleBox>
       <BtnBox>
-        {user ? (
-          <Button onClick={() => navigate("/my_page")}>My page</Button>
+        {token !== null ? (
+          <>
+            <Button onClick={() => onClickLogout()}>logout</Button>
+            {/* <Button onClick={() => navigate("/my_page")}>My page</Button> */}
+            <Button onClick={() => navigate("/upload")}>upload</Button>
+            <Button onClick={() => navigate("/posts")}>board</Button>
+          </>
         ) : (
-          <Button onClick={() => navigate("/login")}>login</Button>
+          <>
+            <Button onClick={() => navigate("/login")}>login</Button>
+            <Button onClick={() => navigate("/posts")}>board</Button>
+          </>
         )}
-        <Button onClick={() => navigate("/upload")}>upload</Button>
-        <Button onClick={() => navigate("/posts")}>board</Button>
       </BtnBox>
     </HeaderBox>
   );

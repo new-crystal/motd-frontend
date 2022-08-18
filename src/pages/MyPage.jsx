@@ -1,4 +1,4 @@
-import MyMusic from "../components/mypage/MyMusic";
+import MyMusic from "../components/myPage/MyMusic";
 
 const MyPage = () => {
   return <MyMusic />;

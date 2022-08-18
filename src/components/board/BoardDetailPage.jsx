@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { __getPostsThunk } from "../../redux/modules/boardSlice";
 import EditBoardDetail from "./EditBoardDetail";
 import { __deletePost } from "../../redux/modules/boardSlice";
+import { decodeToken } from "react-jwt";
 
 const BoardDetailPage = () => {
   const [edit, setEdit] = useState(false);
@@ -13,10 +14,12 @@ const BoardDetailPage = () => {
   const dispatch = useDispatch();
   const postList = useSelector((state) => state.board.posts);
   const posts = postList.find((post) => post.id == id);
+  const token = localStorage.getItem("token");
+  const payload = decodeToken(token);
 
   useEffect(() => {
     dispatch(__getPostsThunk());
-  }, [dispatch, edit]);
+  }, []);
 
   const onClickDelBtnHandler = (id) => {
     dispatch(__deletePost(id));
@@ -36,12 +39,17 @@ const BoardDetailPage = () => {
         />
       ) : (
         <>
-          <ButtonBox>
-            <Button onClick={() => setEdit(true)}>게시글 수정</Button>
-            <Button onClick={() => onClickDelBtnHandler(posts.id)}>
-              게시글 삭제
-            </Button>
-          </ButtonBox>
+          {payload.id === posts.userId ? (
+            <ButtonBox>
+              <Button onClick={() => setEdit(true)}>EDIT</Button>
+              <Button onClick={() => onClickDelBtnHandler(posts.id)}>
+                DELETE
+              </Button>
+            </ButtonBox>
+          ) : (
+            <></>
+          )}
+
           <h1>{posts.title}</h1>
           <p>{posts.nickname}</p>
           <hr />

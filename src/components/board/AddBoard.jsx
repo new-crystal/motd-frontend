@@ -2,12 +2,14 @@ import styled from "styled-components";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { __addPost } from "../../redux/modules/boardSlice";
+import { decodeToken } from "react-jwt";
 
 const AddBoard = ({ setShow }) => {
   const title_ref = useRef();
   const content_ref = useRef();
-
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const payload = decodeToken(token);
 
   const onClickAddBtnHandler = (e) => {
     e.preventDefault();
@@ -18,11 +20,11 @@ const AddBoard = ({ setShow }) => {
       title,
       content,
       userId: 1,
-      nickname: "ss",
+      nickname: payload.nickname,
     };
 
     if (title && content) {
-      dispatch(__addPost(posts));
+      dispatch(__addPost(posts, token));
       setShow(true);
     } else {
       alert("제목과 내용을 모두 작성해주세요!");
@@ -37,15 +39,15 @@ const AddBoard = ({ setShow }) => {
         placeholder="제목을 추가해주세요(10자 이내)"
         maxLength={10}
       />
-      <tr />
+      <br />
       <InputContent
         name="content"
         ref={content_ref}
         placeholder=" 내용을 입력해주세요(50자 이내)"
         maxLength={50}
       />
-      <tr />
-      <Button onClick={(e) => onClickAddBtnHandler(e)}>추가</Button>
+      <br />
+      <Button onClick={(e) => onClickAddBtnHandler(e)}>ADD</Button>
     </form>
   );
 };

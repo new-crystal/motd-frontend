@@ -3,10 +3,9 @@ import styled from "styled-components";
 
 const MusicBoxPage = ({ list }) => {
   const navigate = useNavigate();
-  const musicId = 1;
 
   return (
-    <MusicBox onClick={() => navigate(`/musics/${musicId}`)}>
+    <MusicBox onClick={() => navigate(`/musics/${list.musicId}`)}>
       <MusicImgBox
         url={"https://image.bugsm.co.kr/album/images/1000/40780/4078016.jpg"}
       />
@@ -32,7 +31,7 @@ const MusicImgBox = styled.div`
 `;
 const MusicText = styled.p`
   color: #023e8a;
-  text-align: center;
+  margin-left: 60px;
 `;
 
 export default MusicBoxPage;
