@@ -8,7 +8,6 @@ const AddCommentForm = () => {
   const { musicId } = useParams();
   const token = localStorage.getItem("token");
   const payload = decodeToken(token);
-  const [apple, setApple] = useState(false);
 
   const [comment, setComment] = useState({
     nickname: payload.nickname,
@@ -16,6 +15,7 @@ const AddCommentForm = () => {
   });
 
   const onAddCommentButtonHandler = async (event) => {
+    console.log(event);
     event.preventDefault();
     if (comment.content.trim() === "") {
       return alert("댓글을 입력해주세요.");
@@ -37,7 +37,7 @@ const AddCommentForm = () => {
           nickname: payload.nickname,
           content: "",
         });
-        setApple(true);
+        return window.location.reload();
       } catch (err) {
         console.log(err);
       }
@@ -45,9 +45,9 @@ const AddCommentForm = () => {
       //dispatch(__addComment({ musicId, ...comment, token }));
     }
   };
-  useEffect(() => {
-    onAddCommentButtonHandler();
-  }, [apple]);
+  // useEffect(() => {
+  //   onAddCommentButtonHandler();
+  // }, []);
 
   const onChangeInputHandler = (event) => {
     const { name, value } = event.target;
@@ -58,7 +58,7 @@ const AddCommentForm = () => {
   };
 
   return (
-    <CommentForm onSubmit={onAddCommentButtonHandler}>
+    <CommentForm onSubmit={(event) => onAddCommentButtonHandler(event)}>
       <CommentInput
         placeholder="댓글을 추가하세요(30자 이내)"
         value={comment.content}
@@ -67,7 +67,10 @@ const AddCommentForm = () => {
         maxLength={30}
         onChange={onChangeInputHandler}
       />
-      <Button type="submit" onClick={onAddCommentButtonHandler}>
+      <Button
+        type="submit"
+        onClick={(event) => onAddCommentButtonHandler(event)}
+      >
         ADD
       </Button>
     </CommentForm>

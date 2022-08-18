@@ -16,7 +16,6 @@ const Comments = () => {
   const [commentList, setCommentList] = useState("");
 
   const getComment = async () => {
-    console.log(musicId);
     try {
       const response = await axios.get(
         `http://3.34.47.211/api/comments?musicId=${musicId}`,
@@ -27,18 +26,14 @@ const Comments = () => {
         }
       );
       setCommentList(response.data.result.commentList);
-      console.log(commentList);
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    if (show) {
-      getComment();
-      // dispatch(__getCommentsByMusicId(musicId, token));
-    }
-  }, [musicId, show]);
+    getComment();
+  }, []);
 
   const onClickCommentBtnHandler = () => {
     const commentList = data;

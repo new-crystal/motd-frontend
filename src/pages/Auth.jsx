@@ -82,6 +82,7 @@ const Auth = () => {
       return;
     }
     alert("회원가입에 성공하셨습니다");
+    navigate("/login");
 
     await axios.post("http://3.34.47.211/api/join", data).then((response) => {
       console.log(response);

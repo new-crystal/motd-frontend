@@ -14,16 +14,28 @@ const Comment = ({ comment }) => {
   const { musicId } = useParams();
   const dispatch = useDispatch();
   const [edit, setEdit] = useState(false);
+  const [boo, setBoo] = useState(false);
   const [updatedComment, setUpdatedComment] = useState("");
   const [isShow, setIsShow] = useState(false);
   const token = localStorage.getItem("token");
-  const payload = decodeToken(token);
   const { content } = useSelector((state) => state.comment);
 
-  const onDelButHandler = () => {
+  const onDelButHandler = async () => {
     const result = window.confirm("삭제하시겠습니까?");
     if (result) {
-      dispatch(__deleteComment(comment.id));
+      try {
+        const response = await axios.delete(
+          `http://3.34.47.211/api/comments/${comment.commentId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        return window.location.reload();
+      } catch (err) {
+        return console.log(err);
+      }
     } else {
       return;
     }
@@ -31,40 +43,42 @@ const Comment = ({ comment }) => {
 
   const onUpdatedBtnHandler = async () => {
     try {
-      axios.patch(
-        `http://3.34.47.211/api/comments/&{comment.id}`,
+      const response = await axios.put(
+        `http://3.34.47.211/api/comments/${comment.commentId}`,
         {
-          id: comment.id,
           content: updatedComment,
-          nickname: payload.nickname,
           musicId,
-          token,
         },
         {
           headers: {
-            Authorization: `Bearer ${payload.token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      return setEdit(false);
+      return setEdit(false), window.location.reload();
     } catch (e) {
       return console.log(e);
     }
+  };
 
-    // dispatch(
-    //   __updateComment({
-    //     id: comment.id,
-    //     content: updatedComment,
-    //     nickname: payload.nickname,
-    //     musicId,
-    //     token,
-    //   })
-    // );
+  const getComment = async () => {
+    try {
+      const response = await axios.get(
+        `http://3.34.47.211/api/comments?musicId=${musicId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onChangeEditBtnHandler = (e) => {
     setEdit(true);
-    dispatch(__getComment(comment.id, token));
+    getComment();
     setUpdatedComment(e.target.value);
   };
 
@@ -79,12 +93,15 @@ const Comment = ({ comment }) => {
   useEffect(() => {
     setUpdatedComment(content, token);
     setIsShow(true);
-  }, [content, isShow]);
+  }, []);
 
   useEffect(() => {
-    dispatch(__getComment(token));
+    setTimeout(() => {
+      getComment();
+    }, 300);
+
     setIsShow(false);
-  }, [edit, isShow]);
+  }, [boo, isShow]);
 
   return (
     <div>
