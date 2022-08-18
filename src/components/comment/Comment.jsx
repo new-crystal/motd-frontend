@@ -47,8 +47,8 @@ const Comment = ({ comment }) => {
         }
       );
       return setEdit(false);
-    } catch (err) {
-      return console.log(err);
+    } catch (e) {
+      return console.log(e);
     }
 
     // dispatch(
