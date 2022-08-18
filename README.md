@@ -5,8 +5,10 @@ https://buttoned-wanderer-76d.notion.site/mood_of_the_day-5d205eaf31d24e4e8ca8d5
 
 1. 프로젝트 팀원
 
-@hakyunglee https://github.com/hakyunglee
-@crystal025 https://github.com/crystal025
+@hakyunglee 
+https://github.com/hakyunglee
+@crystal025
+https://github.com/crystal025
 
 2. 기술 
 
@@ -17,7 +19,7 @@ https://buttoned-wanderer-76d.notion.site/mood_of_the_day-5d205eaf31d24e4e8ca8d5
 
 2) 회원가입
 
--정규표현식 작성
+- 정규표현식 작성
 
 3) CRUD
 - redux-thunk를 이용한 전역 상태 관리 사용
