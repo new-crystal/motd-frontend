@@ -1,46 +1,84 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import { decodeToken } from "react-jwt";
 import { useDispatch, useSelector } from "react-redux";
 import {
   __deleteComment,
   __updateComment,
 } from "../../redux/modules/commentsSlice";
 import { __getComment } from "../../redux/modules/commentSlice";
+import axios from "axios";
 
 const Comment = ({ comment }) => {
   const { musicId } = useParams();
   const dispatch = useDispatch();
   const [edit, setEdit] = useState(false);
+  const [boo, setBoo] = useState(false);
   const [updatedComment, setUpdatedComment] = useState("");
   const [isShow, setIsShow] = useState(false);
-
+  const token = localStorage.getItem("token");
   const { content } = useSelector((state) => state.comment);
 
-  const onDelButHandler = () => {
+  const onDelButHandler = async () => {
     const result = window.confirm("삭제하시겠습니까?");
     if (result) {
-      dispatch(__deleteComment(comment.id));
+      try {
+        const response = await axios.delete(
+          `http://3.34.47.211/api/comments/${comment.commentId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        return window.location.reload();
+      } catch (err) {
+        return console.log(err);
+      }
     } else {
       return;
     }
   };
 
-  const onUpdatedBtnHandler = () => {
-    dispatch(
-      __updateComment({
-        id: comment.id,
-        content: updatedComment,
-        nickname: "susu",
-        musicId,
-      })
-    );
-    setEdit(false);
+  const onUpdatedBtnHandler = async () => {
+    try {
+      const response = await axios.put(
+        `http://3.34.47.211/api/comments/${comment.commentId}`,
+        {
+          content: updatedComment,
+          musicId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return setEdit(false), window.location.reload();
+    } catch (e) {
+      return console.log(e);
+    }
+  };
+
+  const getComment = async () => {
+    try {
+      const response = await axios.get(
+        `http://3.34.47.211/api/comments?musicId=${musicId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onChangeEditBtnHandler = (e) => {
     setEdit(true);
-    dispatch(__getComment(comment.id));
+    getComment();
     setUpdatedComment(e.target.value);
   };
 
@@ -53,14 +91,17 @@ const Comment = ({ comment }) => {
   };
 
   useEffect(() => {
-    setUpdatedComment(content);
+    setUpdatedComment(content, token);
     setIsShow(true);
-  }, [content, isShow]);
+  }, []);
 
   useEffect(() => {
-    dispatch(__getComment());
+    setTimeout(() => {
+      getComment();
+    }, 300);
+
     setIsShow(false);
-  }, [edit, isShow]);
+  }, [boo, isShow]);
 
   return (
     <div>
@@ -84,11 +125,12 @@ const Comment = ({ comment }) => {
           <CommentBox>
             <Nickname>{comment.nickname}</Nickname>
             <Content>{comment.content}</Content>
-
-            <div>
-              <Button onClick={onEditBtnHandler}>EDIT</Button>
-              <Button onClick={onDelButHandler}>DELETE</Button>
-            </div>
+            {token !== "" ? (
+              <div>
+                <Button onClick={onEditBtnHandler}>EDIT</Button>
+                <Button onClick={onDelButHandler}>DELETE</Button>
+              </div>
+            ) : null}
           </CommentBox>
         </>
       )}

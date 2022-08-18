@@ -1,32 +1,52 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { __getCommentsByMusicId } from "../../redux/modules/commentsSlice";
+import { useSelector } from "react-redux";
 import { decodeToken } from "react-jwt";
 import AddCommentForm from "./AddComment";
 import Comment from "./Comment";
 import styled from "styled-components";
+import axios from "axios";
 
 const Comments = () => {
   const { musicId } = useParams();
-  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const { data } = useSelector((state) => state.comments.commentsByMusicId);
+  const data = useSelector((state) => state.comments.commentsByMusicId.list);
   const token = localStorage.getItem("token");
   const payload = decodeToken(token);
+  const [commentList, setCommentList] = useState("");
+
+  const getComment = async () => {
+    try {
+      const response = await axios.get(
+        `http://3.34.47.211/api/comments?musicId=${musicId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCommentList(response.data.result.commentList);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    if (show) {
-      dispatch(__getCommentsByMusicId(musicId));
-    }
-  }, [dispatch, musicId, show]);
+    getComment();
+  }, []);
+
+  const onClickCommentBtnHandler = () => {
+    const commentList = data;
+    setShow(!show);
+    setCommentList(commentList);
+  };
 
   return (
     <WrapBox show={show}>
       {payload.userId !== "" ? (
         <CommentBtn
           onClick={() => {
-            setShow(!show);
+            onClickCommentBtnHandler();
           }}
         >
           {show ? "CANCEL" : " WRITING COMMENTS !"}
@@ -34,9 +54,11 @@ const Comments = () => {
       ) : null}
       {show ? <AddCommentForm /> : null}
       <WrapBox>
-        {data?.map((comment) => (
-          <Comment key={comment.id} comment={comment} />
-        ))}
+        {commentList.length !== 0
+          ? commentList?.map((comment, idx) => (
+              <Comment key={idx} comment={comment} />
+            ))
+          : null}
       </WrapBox>
     </WrapBox>
   );

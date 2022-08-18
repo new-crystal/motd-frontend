@@ -21,18 +21,15 @@ const Login = () => {
 
   const handleInputEmail = (e) => {
     setInputEmail(e.target.value); //(e) state를 바꿔줌  "" => e.target.value로
-    console.log(inputEmail);
     //setUserInfo(userinfo.email=inputEmail)
   };
 
   const handleInputPw = (e) => {
     setInputPw(e.target.value);
-    console.log(inputPw);
     //setUserInfo(userinfo.password=inputPw)
   };
 
   const onSubmitHandler = async (userinfo) => {
-    console.log(inputEmail, inputPw);
     try {
       const response = await axios.post(
         "http://3.34.47.211/api/login",
