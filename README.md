@@ -1,3 +1,6 @@
+
+[![Video Label](http://img.youtube.com/vi/G5P7WP_DokU/0.jpg)](https://youtu.be/G5P7WP_DokU)
+
 ## Mood of the day
 
 노션페이지
