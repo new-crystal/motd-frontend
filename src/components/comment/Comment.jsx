@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import { decodeToken } from "react-jwt";
 import { useDispatch, useSelector } from "react-redux";
 import {
   __deleteComment,
@@ -14,13 +15,15 @@ const Comment = ({ comment }) => {
   const [edit, setEdit] = useState(false);
   const [updatedComment, setUpdatedComment] = useState("");
   const [isShow, setIsShow] = useState(false);
+  const token = localStorage.getItem("token");
+  const payload = decodeToken(token);
 
   const { content } = useSelector((state) => state.comment);
 
   const onDelButHandler = () => {
     const result = window.confirm("삭제하시겠습니까?");
     if (result) {
-      dispatch(__deleteComment(comment.id));
+      dispatch(__deleteComment(comment.id, token));
     } else {
       return;
     }
@@ -31,8 +34,9 @@ const Comment = ({ comment }) => {
       __updateComment({
         id: comment.id,
         content: updatedComment,
-        nickname: "susu",
+        nickname: payload.nickname,
         musicId,
+        token,
       })
     );
     setEdit(false);
@@ -40,7 +44,7 @@ const Comment = ({ comment }) => {
 
   const onChangeEditBtnHandler = (e) => {
     setEdit(true);
-    dispatch(__getComment(comment.id));
+    dispatch(__getComment(comment.id, token));
     setUpdatedComment(e.target.value);
   };
 
@@ -53,12 +57,12 @@ const Comment = ({ comment }) => {
   };
 
   useEffect(() => {
-    setUpdatedComment(content);
+    setUpdatedComment(content, token);
     setIsShow(true);
   }, [content, isShow]);
 
   useEffect(() => {
-    dispatch(__getComment());
+    dispatch(__getComment(token));
     setIsShow(false);
   }, [edit, isShow]);
 
@@ -84,11 +88,12 @@ const Comment = ({ comment }) => {
           <CommentBox>
             <Nickname>{comment.nickname}</Nickname>
             <Content>{comment.content}</Content>
-
-            <div>
-              <Button onClick={onEditBtnHandler}>EDIT</Button>
-              <Button onClick={onDelButHandler}>DELETE</Button>
-            </div>
+            {token !== "" ? (
+              <div>
+                <Button onClick={onEditBtnHandler}>EDIT</Button>
+                <Button onClick={onDelButHandler}>DELETE</Button>
+              </div>
+            ) : null}
           </CommentBox>
         </>
       )}

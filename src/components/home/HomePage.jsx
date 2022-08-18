@@ -58,7 +58,7 @@ const HomePage = () => {
   return (
     <>
       <Container>
-        <Text>🎧{payload.nickname} Music of today🎧</Text>
+        <Text>🎧My Music of today🎧</Text>
         <Box>
           {current(posts)?.map((list, idx) => {
             return <MusicBoxPage list={list} key={idx} />;
@@ -74,7 +74,7 @@ const HomePage = () => {
       />
 
       <Container>
-        <Text>💙Music of {payload.nickname} like💙</Text>
+        <Text>💙Music of I like💙</Text>
         <Box>
           {currentPost(likePosts)?.map((list, idx) => {
             return <MusicBoxPage list={list} key={idx} />;

@@ -6,7 +6,11 @@ export const __getMusicsThunk = createAsyncThunk(
   "GET",
   async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.get(`${serverUrl}/musics`);
+      const { data } = await axios.get(`${serverUrl}/musics`, {
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      });
       return thunkAPI.fulfillWithValue(data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err.code);
@@ -26,7 +30,6 @@ export const __addMusic = createAsyncThunk("ADD", async (payload, thunkAPI) => {
         },
       }
     );
-    console.log(data);
     return thunkAPI.fulfillWithValue(data);
   } catch (err) {
     return thunkAPI.rejectWithValue(err);

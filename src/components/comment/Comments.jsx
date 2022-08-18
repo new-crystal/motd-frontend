@@ -6,27 +6,54 @@ import { decodeToken } from "react-jwt";
 import AddCommentForm from "./AddComment";
 import Comment from "./Comment";
 import styled from "styled-components";
+import axios from "axios";
 
 const Comments = () => {
   const { musicId } = useParams();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const { data } = useSelector((state) => state.comments.commentsByMusicId);
+  const data = useSelector((state) => state.comments.commentsByMusicId.list);
   const token = localStorage.getItem("token");
   const payload = decodeToken(token);
+  const [commentList, setCommentList] = useState("");
+
+  const getComment = async () => {
+    console.log(musicId);
+    try {
+      const response = await axios.get(
+        `http://3.34.47.211/api/comments?musicId=${musicId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCommentList(response.data.result.commentList);
+      console.log(commentList);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     if (show) {
-      dispatch(__getCommentsByMusicId(musicId));
+      getComment();
+      // dispatch(__getCommentsByMusicId(musicId, token));
     }
-  }, [dispatch, musicId, show]);
+  }, [musicId, show]);
+
+  const onClickCommentBtnHandler = () => {
+    const commentList = data;
+    setShow(!show);
+    setCommentList(commentList);
+  };
 
   return (
     <WrapBox show={show}>
       {payload.userId !== "" ? (
         <CommentBtn
           onClick={() => {
-            setShow(!show);
+            onClickCommentBtnHandler();
           }}
         >
           {show ? "CANCEL" : " WRITING COMMENTS !"}
@@ -34,9 +61,11 @@ const Comments = () => {
       ) : null}
       {show ? <AddCommentForm /> : null}
       <WrapBox>
-        {data?.map((comment) => (
-          <Comment key={comment.id} comment={comment} />
-        ))}
+        {commentList.length !== 0
+          ? commentList?.map((comment, idx) => (
+              <Comment key={idx} comment={comment} />
+            ))
+          : null}
       </WrapBox>
     </WrapBox>
   );

@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { __addComment } from "../../redux/modules/commentsSlice";
 import styled from "styled-components";
 import { decodeToken } from "react-jwt";
+import axios from "axios";
 
 const AddCommentForm = () => {
-  const dispatch = useDispatch();
   const { musicId } = useParams();
   const token = localStorage.getItem("token");
   const payload = decodeToken(token);
@@ -16,17 +14,35 @@ const AddCommentForm = () => {
     content: "",
   });
 
-  const onAddCommentButtonHandler = (event) => {
+  const onAddCommentButtonHandler = async (event) => {
     event.preventDefault();
     if (comment.content.trim() === "") {
       return alert("댓글을 입력해주세요.");
-    }
+    } else {
+      try {
+        const data = await axios.post(
+          "http://3.34.47.211/api/comments",
+          {
+            musicId: musicId,
+            content: comment.content,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setComment({
+          nickname: payload.nickname,
+          content: "",
+        });
+        console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
 
-    dispatch(__addComment({ musicId, ...comment, token }));
-    setComment({
-      nickname: payload.nickname,
-      content: "",
-    });
+      //dispatch(__addComment({ musicId, ...comment, token }));
+    }
   };
 
   const onChangeInputHandler = (event) => {
