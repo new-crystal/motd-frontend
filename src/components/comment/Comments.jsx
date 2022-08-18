@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { __getCommentsByMusicId } from "../../redux/modules/commentsSlice";
+import { useSelector } from "react-redux";
 import { decodeToken } from "react-jwt";
 import AddCommentForm from "./AddComment";
 import Comment from "./Comment";
@@ -10,7 +9,6 @@ import axios from "axios";
 
 const Comments = () => {
   const { musicId } = useParams();
-  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const data = useSelector((state) => state.comments.commentsByMusicId.list);
   const token = localStorage.getItem("token");

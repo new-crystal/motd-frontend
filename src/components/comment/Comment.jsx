@@ -8,6 +8,7 @@ import {
   __updateComment,
 } from "../../redux/modules/commentsSlice";
 import { __getComment } from "../../redux/modules/commentSlice";
+import axios from "axios";
 
 const Comment = ({ comment }) => {
   const { musicId } = useParams();
@@ -17,29 +18,48 @@ const Comment = ({ comment }) => {
   const [isShow, setIsShow] = useState(false);
   const token = localStorage.getItem("token");
   const payload = decodeToken(token);
-
   const { content } = useSelector((state) => state.comment);
 
   const onDelButHandler = () => {
     const result = window.confirm("삭제하시겠습니까?");
     if (result) {
-      dispatch(__deleteComment(comment.id, token));
+      dispatch(__deleteComment(comment.id));
     } else {
       return;
     }
   };
 
-  const onUpdatedBtnHandler = () => {
-    dispatch(
-      __updateComment({
-        id: comment.id,
-        content: updatedComment,
-        nickname: payload.nickname,
-        musicId,
-        token,
-      })
-    );
-    setEdit(false);
+  const onUpdatedBtnHandler = async () => {
+    try {
+      axios.patch(
+        `http://3.34.47.211/api/comments/&{comment.id}`,
+        {
+          id: comment.id,
+          content: updatedComment,
+          nickname: payload.nickname,
+          musicId,
+          token,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`,
+          },
+        }
+      );
+      return setEdit(false);
+    } catch (err) {
+      return console.log(err);
+    }
+
+    // dispatch(
+    //   __updateComment({
+    //     id: comment.id,
+    //     content: updatedComment,
+    //     nickname: payload.nickname,
+    //     musicId,
+    //     token,
+    //   })
+    // );
   };
 
   const onChangeEditBtnHandler = (e) => {

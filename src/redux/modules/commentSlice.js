@@ -6,7 +6,6 @@ export const __getComment = createAsyncThunk(
   "GET_COMMENT",
   async (payload, thunkAPI) => {
     try {
-      console.log(payload.id);
       const { data } = await axios.get(`${serverUrl}/comments/${payload}`, {
         headers: {
           Authorization: `Bearer ${payload.token}`,

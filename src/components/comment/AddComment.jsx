@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { decodeToken } from "react-jwt";
@@ -8,6 +8,7 @@ const AddCommentForm = () => {
   const { musicId } = useParams();
   const token = localStorage.getItem("token");
   const payload = decodeToken(token);
+  const [apple, setApple] = useState(false);
 
   const [comment, setComment] = useState({
     nickname: payload.nickname,
@@ -36,7 +37,7 @@ const AddCommentForm = () => {
           nickname: payload.nickname,
           content: "",
         });
-        console.log(data);
+        setApple(true);
       } catch (err) {
         console.log(err);
       }
@@ -44,6 +45,9 @@ const AddCommentForm = () => {
       //dispatch(__addComment({ musicId, ...comment, token }));
     }
   };
+  useEffect(() => {
+    onAddCommentButtonHandler();
+  }, [apple]);
 
   const onChangeInputHandler = (event) => {
     const { name, value } = event.target;
